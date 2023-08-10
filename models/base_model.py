@@ -2,6 +2,8 @@
 
 """BaseModel class module"""
 
+import models
+
 from uuid import uuid4
 from datetime import datetime
 
@@ -56,6 +58,9 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = self.created_at
 
+            # Add a call to the new(self) method on storage
+            models.storage.new(self)
+
     def __str__(self):
         """
         Returns the string representation of the BaseModel instance"
@@ -74,6 +79,7 @@ class BaseModel:
             None
         """
         self.updated_at = datetime.now()
+        models.storage.save()  # Call the save() method of the storage instance
 
     def to_dict(self):
         """
