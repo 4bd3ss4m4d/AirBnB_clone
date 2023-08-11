@@ -4,6 +4,7 @@
 
 import json
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -24,7 +25,9 @@ class FileStorage:
     __objects = {}
 
     def all(self):
-        """Returns the dictionary __objects"""
+        """
+        Returns the dictionary __objects
+        """
         return self.__objects
 
     def new(self, obj):
