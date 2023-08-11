@@ -38,6 +38,11 @@ class HBNBCommand(cmd.Cmd):
     __clase_names = {
         "BaseModel",
         "User",
+        "State",
+        "City",
+        "Amenity",
+        "Place",
+        "Review"
     }
 
     def do_quit(self, arg):
