@@ -5,6 +5,8 @@
 import cmd
 from models.base_model import BaseModel
 from models import storage
+import json
+import shlex
 
 
 class HBNBCommand(cmd.Cmd):
@@ -212,6 +214,41 @@ class HBNBCommand(cmd.Cmd):
         objects_dict = storage.all()
         count = sum(1 for key in objects_dict if arg in key)
         print(count)
+
+    def do_update_using_class(self, arg):
+        if not arg:
+            print("** class name missing **")
+            return
+        my_dict = "{" + arg.split("{")[1]
+        data = shlex.split(arg)
+        storage.reload()
+        obj = storage.all()
+        if data[0] not in self.__clase_names.keys():
+            print("** class doesn't exist **")
+            return
+        if (len(data) == 1):
+            print("** instance id missing **")
+            return
+        try:
+            key = data[0] + "." + data[1]
+            obj[key]
+        except KeyError:
+            print("** no instance found **")
+            return
+        if (my_dict == "{"):
+            print("** attribute name missing **")
+            return
+
+        my_dict = my_dict.replace("\'", "\"")
+        my_dict = json.loads(my_dict)
+        my_instance = obj[key]
+        for my_key in my_dict:
+            if hasattr(my_instance, my_key):
+                data_type = type(getattr(my_instance, my_key))
+                setattr(my_instance, my_key, my_dict[my_key])
+            else:
+                setattr(my_instance, my_key, my_dict[my_key])
+        storage.save()
 
 
 if __name__ == '__main__':
