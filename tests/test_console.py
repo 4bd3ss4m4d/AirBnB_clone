@@ -137,6 +137,7 @@ class TestCityToDict(unittest.TestCase):
         with self.assertRaises(TypeError):
             city.to_dict(None)
 
+
 class TestCitySave(unittest.TestCase):
     """Tests for saving the City class"""
 
@@ -189,4 +190,3 @@ class TestCitySave(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
