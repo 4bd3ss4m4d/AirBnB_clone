@@ -20,13 +20,6 @@ from models.review import Review
 class TestFileStorageInstantiation(unittest.TestCase):
     """Test instantiation of the FileStorage class."""
 
-    def test_instantiation_no_args(self):
-        self.assertEqual(type(FileStorage()), FileStorage)
-
-    def test_instantiation_with_arg(self):
-        with self.assertRaises(TypeError):
-            FileStorage(None)
-
     def test_file_path_is_private_str(self):
         self.assertEqual(str, type(FileStorage._FileStorage__file_path))
 
@@ -36,19 +29,16 @@ class TestFileStorageInstantiation(unittest.TestCase):
     def test_storage_initialization(self):
         self.assertEqual(type(models.storage), FileStorage)
 
+    def test_instantiation_no_args(self):
+        self.assertEqual(type(FileStorage()), FileStorage)
+
+    def test_instantiation_with_arg(self):
+        with self.assertRaises(TypeError):
+            FileStorage(None)
+
 
 class TestFileStorageMethods(unittest.TestCase):
     """Test methods of the FileStorage class."""
-
-    @classmethod
-    def set_up_class(cls):
-        cls.backup_file_path = models.storage._FileStorage__file_path
-        models.storage._FileStorage__file_path = "test_file.json"
-
-    @classmethod
-    def tear_down_class(cls):
-        os.remove("test_file.json")
-        models.storage._FileStorage__file_path = cls.backup_file_path
 
     def set_up(self):
         FileStorage._FileStorage__objects = {}
@@ -60,43 +50,16 @@ class TestFileStorageMethods(unittest.TestCase):
         with self.assertRaises(TypeError):
             models.storage.all(None)
 
-    def test_new_obj(self):
-        base_model = BaseModel()
-        some_user = User()
-        some_state = State()
-        some_place = Place()
-        some_city = City()
-        some_amenity = Amenity()
-        some_review = Review()
-        models.storage.new(base_model)
-        models.storage.new(some_user)
-        models.storage.new(some_state)
-        models.storage.new(some_place)
-        models.storage.new(some_city)
-        models.storage.new(some_amenity)
-        models.storage.new(some_review)
-        self.assertIn("BaseModel." + base_model.id,
-                      models.storage.all().keys())
-        self.assertIn(base_model, models.storage.all().values())
-        self.assertIn("User." + some_user.id, models.storage.all().keys())
-        self.assertIn(some_user, models.storage.all().values())
-        self.assertIn("State." + some_state.id, models.storage.all().keys())
-        self.assertIn(some_state, models.storage.all().values())
-        self.assertIn("Place." + some_place.id, models.storage.all().keys())
-        self.assertIn(some_place, models.storage.all().values())
-        self.assertIn("City." + some_city.id, models.storage.all().keys())
-        self.assertIn(some_city, models.storage.all().values())
-        self.assertIn("Amenity." + some_amenity.id,
-                      models.storage.all().keys())
-        self.assertIn(some_amenity, models.storage.all().values())
-        self.assertIn("Review." + some_review.id,
-                      models.storage.all().keys())
-        self.assertIn(some_review, models.storage.all().values())
+    @classmethod
+    def set_up_class(cls):
+        cls.backup_file_path = models.storage._FileStorage__file_path
+        models.storage._FileStorage__file_path = "test_file.json"
 
-    def test_new_with_args(self):
-        with self.assertRaises(TypeError):
-            models.storage.new(BaseModel(), 1)
-
+    @classmethod
+    def tear_down_class(cls):
+        os.remove("test_file.json")
+        models.storage._FileStorage__file_path = cls.backup_file_path
+    
     def test_new_with_None(self):
         with self.assertRaises(AttributeError):
             models.storage.new(None)
@@ -127,6 +90,44 @@ class TestFileStorageMethods(unittest.TestCase):
             self.assertIn("City." + some_cit.id, save_text)
             self.assertIn("Amenity." + some_amenity.id, save_text)
             self.assertIn("Review." + some_review.id, save_text)
+
+    def test_new_obj(self):
+        some_state = State()
+        some_place = Place()
+        some_city = City()
+        some_amenity = Amenity()
+        base_model = BaseModel()
+        some_user = User()
+        some_review = Review()
+        models.storage.new(some_user)
+        models.storage.new(some_state)
+        models.storage.new(some_place)
+        models.storage.new(some_city)
+        models.storage.new(base_model)
+        models.storage.new(some_amenity)
+        models.storage.new(some_review)
+        self.assertIn("BaseModel." + base_model.id,
+                      models.storage.all().keys())
+        self.assertIn(base_model, models.storage.all().values())
+        self.assertIn("User." + some_user.id, models.storage.all().keys())
+        self.assertIn(some_user, models.storage.all().values())
+        self.assertIn("State." + some_state.id, models.storage.all().keys())
+        self.assertIn(some_state, models.storage.all().values())
+        self.assertIn("Place." + some_place.id, models.storage.all().keys())
+        self.assertIn(some_place, models.storage.all().values())
+        self.assertIn("City." + some_city.id, models.storage.all().keys())
+        self.assertIn(some_city, models.storage.all().values())
+        self.assertIn("Amenity." + some_amenity.id,
+                      models.storage.all().keys())
+        self.assertIn(some_amenity, models.storage.all().values())
+        self.assertIn("Review." + some_review.id,
+                      models.storage.all().keys())
+        self.assertIn(some_review, models.storage.all().values())
+
+    def test_new_with_args(self):
+        with self.assertRaises(TypeError):
+            models.storage.new(BaseModel(), 1)
+    
 
     def test_save_with_arg(self):
         with self.assertRaises(TypeError):
