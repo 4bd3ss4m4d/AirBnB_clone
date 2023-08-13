@@ -250,6 +250,48 @@ class HBNBCommand(cmd.Cmd):
                 setattr(my_instance, my_key, my_dict[my_key])
         storage.save()
 
+    def default(self, arg):
+        """
+        Called on an input line when the command prefix is not recognized.
+        If this method is not overridden, it prints an error message and
+        returns.
+        """
+        methods_dict = {
+            "count": self.do_count,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "all": self.do_all,
+            "update": self.do_update
+        }
+        
+        commands = arg.strip().split(".")
+        if len(commands) != 2:
+            return cmd.Cmd.default(self, arg)
+        
+        class_name = commands[0]
+        command = commands[1].split("(")[0]
+        line = ""
+        if (command == "update" and commands[1].split("(")[1][-2] == "}"):
+            inputs = commands[1].split("(")[1].split(",", 1)
+            inputs[0] = shlex.split(inputs[0])[0]
+            line = "".join(inputs)[0:-1]
+            line = class_name + " " + line
+            self.do_update2(line.strip())
+            return
+        try:
+            inputs = commands[1].split("(")[1].split(",")
+            for num in range(len(inputs)):
+                if (num != len(inputs) - 1):
+                    line = line + " " + shlex.split(inputs[num])[0]
+                else:
+                    line = line + " " + shlex.split(inputs[num][0:-1])[0]
+        except IndexError:
+            inputs = ""
+            line = ""
+        line = class_name + line
+        if (command in methods_dict.keys()):
+            methods_dict[command](line.strip())
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
