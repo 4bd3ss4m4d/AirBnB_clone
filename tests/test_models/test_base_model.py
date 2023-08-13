@@ -19,10 +19,10 @@ class TestBaseModelInstantiation(unittest.TestCase):
     def test_str_representation(self):
         dt = datetime.today()
         dt_repr = repr(dt)
-        bm = BaseModel()
-        bm.id = "123456"
-        bm.created_at = bm.updated_at = dt
-        bmstr = bm.__str__()
+        base_model = BaseModel()
+        base_model.id = "123456"
+        base_model.created_at = base_model.updated_at = dt
+        bmstr = base_model.__str__()
         self.assertIn("[BaseModel] (123456)", bmstr)
         self.assertIn("'id': '123456'", bmstr)
         self.assertIn("'created_at': " + dt_repr, bmstr)
@@ -30,6 +30,25 @@ class TestBaseModelInstantiation(unittest.TestCase):
 
     def test_instance_stored_in_objects(self):
         self.assertIn(BaseModel(), models.storage.all().values())
+
+class TestBaseModelToDict(unittest.TestCase):
+    """Tests for the to_dict method of the BaseModel class."""
+
+    def test_to_dict_type(self):
+        bm = BaseModel()
+        self.assertTrue(dict, type(bm.to_dict()))
+
+    def test_to_dict_with_arg(self):
+        bm = BaseModel()
+        with self.assertRaises(TypeError):
+            bm.to_dict(None)
+
+    def test_to_dict_contains_correct_keys(self):
+        base_model = BaseModel()
+        self.assertIn("created_at", base_model.to_dict())
+        self.assertIn("updated_at", base_model.to_dict())
+        self.assertIn("id", base_model.to_dict())
+        self.assertIn("__class__", base_model.to_dict())
 
 
 class TestBaseModelSave(unittest.TestCase):
@@ -41,24 +60,6 @@ class TestBaseModelSave(unittest.TestCase):
             os.rename("file.json", "tmp")
         except IOError:
             pass
-
-    @classmethod
-    def tear_down_class(cls):
-        try:
-            os.remove("file.json")
-        except IOError:
-            pass
-        try:
-            os.rename("tmp", "file.json")
-        except IOError:
-            pass
-
-    def test_one_save(self):
-        bm = BaseModel()
-        sleep(0.05)
-        first_updated_at = bm.updated_at
-        bm.save()
-        self.assertLess(first_updated_at, bm.updated_at)
 
     def test_multiple_saves_update_order(self):
         bm = BaseModel()
@@ -78,25 +79,23 @@ class TestBaseModelSave(unittest.TestCase):
         with open("file.json", "r") as f:
             self.assertIn(bmid, f.read())
 
+    @classmethod
+    def tear_down_class(cls):
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("tmp", "file.json")
+        except IOError:
+            pass
 
-class TestBaseModelToDict(unittest.TestCase):
-    """Tests for the to_dict method of the BaseModel class."""
-
-    def test_to_dict_type(self):
+    def test_one_save(self):
         bm = BaseModel()
-        self.assertTrue(dict, type(bm.to_dict()))
-
-    def test_to_dict_with_arg(self):
-        bm = BaseModel()
-        with self.assertRaises(TypeError):
-            bm.to_dict(None)
-
-    def test_to_dict_contains_correct_keys(self):
-        bm = BaseModel()
-        self.assertIn("id", bm.to_dict())
-        self.assertIn("created_at", bm.to_dict())
-        self.assertIn("updated_at", bm.to_dict())
-        self.assertIn("__class__", bm.to_dict())
+        sleep(0.05)
+        first_updated_at = bm.updated_at
+        bm.save()
+        self.assertLess(first_updated_at, bm.updated_at)
 
 
 if __name__ == "__main__":
