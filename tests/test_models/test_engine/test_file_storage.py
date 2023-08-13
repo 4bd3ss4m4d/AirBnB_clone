@@ -75,7 +75,8 @@ class TestFileStorageMethods(unittest.TestCase):
         models.storage.new(some_city)
         models.storage.new(some_amenity)
         models.storage.new(some_review)
-        self.assertIn("BaseModel." + base_model.id, models.storage.all().keys())
+        self.assertIn("BaseModel." + base_model.id,
+                      models.storage.all().keys())
         self.assertIn(base_model, models.storage.all().values())
         self.assertIn("User." + some_user.id, models.storage.all().keys())
         self.assertIn(some_user, models.storage.all().values())
@@ -85,9 +86,11 @@ class TestFileStorageMethods(unittest.TestCase):
         self.assertIn(some_place, models.storage.all().values())
         self.assertIn("City." + some_city.id, models.storage.all().keys())
         self.assertIn(some_city, models.storage.all().values())
-        self.assertIn("Amenity." + some_amenity.id, models.storage.all().keys())
+        self.assertIn("Amenity." + some_amenity.id,
+                      models.storage.all().keys())
         self.assertIn(some_amenity, models.storage.all().values())
-        self.assertIn("Review." + some_review.id, models.storage.all().keys())
+        self.assertIn("Review." + some_review.id,
+                      models.storage.all().keys())
         self.assertIn(some_review, models.storage.all().values())
 
     def test_new_with_args(self):
@@ -166,4 +169,3 @@ class TestFileStorageMethods(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
