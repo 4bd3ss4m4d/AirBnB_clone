@@ -28,9 +28,46 @@ class HBNBCommand(cmd.Cmd):
         "Review": Review
     }
 
-    def do_nothing(self, arg):
-        """ Does nothing """
-        pass
+    def default(self, arg):
+        """
+        Called on an input line when the command prefix is not recognized.
+        If this method is not overridden, it prints an error message and
+        returns.
+        """
+        methods_dict = {
+            "all": self.do_all,
+            "count": self.do_count,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "update": self.do_update
+        }
+        commands = arg.strip().split(".")
+        if len(commands) != 2:
+            cmd.Cmd.default(self, arg)
+            return
+        class_name = commands[0]
+        command = commands[1].split("(")[0]
+        line = ""
+        if (command == "update" and commands[1].split("(")[1][-2] == "}"):
+            inputs_data = commands[1].split("(")[1].split(",", 1)
+            inputs_data[0] = shlex.split(inputs_data[0])[0]
+            line = "".join(inputs_data)[0:-1]
+            line = class_name + " " + line
+            self.do_update_using_class(line.strip())
+            return
+        try:
+            inputs_data = commands[1].split("(")[1].split(",")
+            for n in range(len(inputs_data)):
+                if (n != len(inputs_data) - 1):
+                    line = line + " " + shlex.split(inputs_data[n])[0]
+                else:
+                    line = line + " " + shlex.split(inputs_data[n][0:-1])[0]
+        except IndexError:
+            inputs_data = ""
+            line = ""
+        line = class_name + line
+        if (command in methods_dict.keys()):
+            methods_dict[command](line.strip())
 
     def do_quit(self, arg):
         """
@@ -65,6 +102,10 @@ class HBNBCommand(cmd.Cmd):
         Return:
             None
         """
+        pass
+
+    def do_nothing(self, arg):
+        """ Does nothing """
         pass
 
     def do_create(self, arg):
@@ -114,7 +155,6 @@ class HBNBCommand(cmd.Cmd):
         if len(command_args) <= 1:
             print("** instance id missing **")
             return
-        storage.reload()
         inst_dicts = storage.all()
         key = "{}.{}".format(command_args[0], command_args[1])
         if key in inst_dicts:
@@ -146,7 +186,6 @@ class HBNBCommand(cmd.Cmd):
         if len(command_args) <= 1:
             print("** instance id missing **")
             return
-        storage.reload()
         inst_dicts = storage.all()
         key = "{}.{}".format(command_args[0], command_args[1])
         if key in inst_dicts:
@@ -165,7 +204,6 @@ class HBNBCommand(cmd.Cmd):
         Args:
             arg (str): class name of the instance to show or nothing
         """
-        storage.reload()
         json_data = []
         inst_dicts = storage.all()
         if not arg:
@@ -197,7 +235,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         command_arg = shlex.split(arg)
-        storage.reload()
         insts_dicts = storage.all()
         if command_arg[0] not in HBNBCommand.class_names.keys():
             print("** class doesn't exist **")
@@ -235,7 +272,6 @@ class HBNBCommand(cmd.Cmd):
             return
         dictionary_data = "{" + arg.split("{")[1]
         data_arg = shlex.split(arg)
-        storage.reload()
         objs_dict = storage.all()
         if data_arg[0] not in HBNBCommand.class_names.keys():
             print("** class doesn't exist **")
@@ -279,47 +315,6 @@ class HBNBCommand(cmd.Cmd):
             if (arg in key):
                 counter += 1
         print(counter)
-
-    def default(self, arg):
-        """
-        Called on an input line when the command prefix is not recognized.
-        If this method is not overridden, it prints an error message and
-        returns.
-        """
-        methods_dict = {
-            "all": self.do_all,
-            "count": self.do_count,
-            "show": self.do_show,
-            "destroy": self.do_destroy,
-            "update": self.do_update
-        }
-        commands = arg.strip().split(".")
-        if len(commands) != 2:
-            cmd.Cmd.default(self, arg)
-            return
-        class_name = commands[0]
-        command = commands[1].split("(")[0]
-        line = ""
-        if (command == "update" and commands[1].split("(")[1][-2] == "}"):
-            inputs_data = commands[1].split("(")[1].split(",", 1)
-            inputs_data[0] = shlex.split(inputs_data[0])[0]
-            line = "".join(inputs_data)[0:-1]
-            line = class_name + " " + line
-            self.do_update_using_class(line.strip())
-            return
-        try:
-            inputs_data = commands[1].split("(")[1].split(",")
-            for n in range(len(inputs_data)):
-                if (n != len(inputs_data) - 1):
-                    line = line + " " + shlex.split(inputs_data[n])[0]
-                else:
-                    line = line + " " + shlex.split(inputs_data[n][0:-1])[0]
-        except IndexError:
-            inputs_data = ""
-            line = ""
-        line = class_name + line
-        if (command in methods_dict.keys()):
-            methods_dict[command](line.strip())
 
 
 if __name__ == '__main__':
