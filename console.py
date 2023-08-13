@@ -160,9 +160,6 @@ class HBNBCommand(cmd.Cmd):
 
         Args:
             arg (str): class name of the instance to show or nothing
-
-        Return:
-            None
         """
         if not arg:
             objects = storage.all()
@@ -184,9 +181,6 @@ class HBNBCommand(cmd.Cmd):
         Args:
             arg (str): class name, id, attribute name and attribute value of
             the instance to update
-
-        Return:
-            None
         """
         if not arg:
             print("** class name missing **")
