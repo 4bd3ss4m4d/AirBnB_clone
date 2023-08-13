@@ -88,75 +88,11 @@ class TestCityInstantiation(unittest.TestCase):
             City(id=None, created_at=None, updated_at=None)
 
 
-class TestCitySave(unittest.TestCase):
-    """Tests for saving the City class"""
-
-    @classmethod
-    def set_up_class(self):
-        try:
-            os.rename("file.json", "tmp")
-        except IOError:
-            pass
-
-    def tear_down_class(self):
-        try:
-            os.remove("file.json")
-        except IOError:
-            pass
-        try:
-            os.rename("tmp", "file.json")
-        except IOError:
-            pass
-
-    def test_one_save_updates_updated_at(self):
-        city = City()
-        sleep(0.06)
-        initial_updated_at = city.updated_at
-        city.save()
-        self.assertLess(initial_updated_at, city.updated_at)
-
-    def test_multiple_saves_update_updated_at(self):
-        city = City()
-        sleep(0.06)
-        initial_updated_at = city.updated_at
-        city.save()
-        updated_at_after_first_save = city.updated_at
-        sleep(0.06)
-        city.save()
-        self.assertLess(updated_at_after_first_save, city.updated_at)
-
-    def test_save_with_arg_raises_type_error(self):
-        city = City()
-        with self.assertRaises(TypeError):
-            city.save(None)
-
-    def test_save_updates_file_content(self):
-        city = City()
-        city.save()
-        city_id = "City." + city.id
-        with open("file.json", "r") as f:
-            self.assertIn(city_id, f.read())
-
-
 class TestCityToDict(unittest.TestCase):
     """Tests for converting City instance to dictionary"""
 
     def test_to_dict_returns_dict_type(self):
         self.assertTrue(dict, type(City().to_dict()))
-
-    def test_to_dict_contains_correct_keys(self):
-        city = City()
-        self.assertIn("id", city.to_dict())
-        self.assertIn("created_at", city.to_dict())
-        self.assertIn("updated_at", city.to_dict())
-        self.assertIn("__class__", city.to_dict())
-
-    def test_to_dict_contains_added_attributes(self):
-        city = City()
-        city.middle_name = "Metropolis"
-        city.my_number = 98
-        self.assertEqual("Metropolis", city.middle_name)
-        self.assertIn("my_number", city.to_dict())
 
     def test_to_dict_datetime_attributes_are_strs(self):
         city = City()
@@ -182,10 +118,74 @@ class TestCityToDict(unittest.TestCase):
         city = City()
         self.assertNotEqual(city.to_dict(), city.__dict__)
 
+    def test_to_dict_contains_correct_keys(self):
+        city = City()
+        self.assertIn("id", city.to_dict())
+        self.assertIn("created_at", city.to_dict())
+        self.assertIn("updated_at", city.to_dict())
+        self.assertIn("__class__", city.to_dict())
+
+    def test_to_dict_contains_added_attributes(self):
+        city = City()
+        city.middle_name = "Metropolis"
+        city.my_number = 98
+        self.assertEqual("Metropolis", city.middle_name)
+        self.assertIn("my_number", city.to_dict())
+
     def test_to_dict_with_arg_raises_type_error(self):
         city = City()
         with self.assertRaises(TypeError):
             city.to_dict(None)
+
+
+class TestCitySave(unittest.TestCase):
+    """Tests for saving the City class"""
+
+    def test_one_save_updates_updated_at(self):
+        city = City()
+        sleep(0.06)
+        initial_updated_at = city.updated_at
+        city.save()
+        self.assertLess(initial_updated_at, city.updated_at)
+
+    def test_multiple_saves_update_updated_at(self):
+        city = City()
+        sleep(0.06)
+        initial_updated_at = city.updated_at
+        city.save()
+        updated_at_after_first_save = city.updated_at
+        sleep(0.06)
+        city.save()
+        self.assertLess(updated_at_after_first_save, city.updated_at)
+
+    def test_save_with_arg_raises_type_error(self):
+        city = City()
+        with self.assertRaises(TypeError):
+            city.save(None)
+
+    @classmethod
+    def set_up_class(self):
+        try:
+            os.rename("file.json", "tmp")
+        except IOError:
+            pass
+
+    def tear_down_class(self):
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("tmp", "file.json")
+        except IOError:
+            pass
+
+    def test_save_updates_file_content(self):
+        city = City()
+        city.save()
+        city_id = "City." + city.id
+        with open("file.json", "r") as f:
+            self.assertIn(city_id, f.read())
 
 
 if __name__ == "__main__":
