@@ -105,6 +105,7 @@ class TestHBNBCommandHelp(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("help"))
             self.assertEqual(h, output.getvalue().strip())
 
+
 class TestHBNBCommandPrompting(unittest.TestCase):
     """Unittests for testing prompting of the HBNB command interpreter."""
 
@@ -115,6 +116,7 @@ class TestHBNBCommandPrompting(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(""))
             self.assertEqual("", output.getvalue().strip())
+
 
 class TestHBNBCommandExit(unittest.TestCase):
     """Unittests for testing exiting from the HBNB command interpreter."""
@@ -127,8 +129,11 @@ class TestHBNBCommandExit(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertTrue(HBNBCommand().onecmd("EOF"))
 
+
 class TestHBNBCommandCreate(unittest.TestCase):
-    """Unittests for testing 'create' command of the HBNB command interpreter."""
+    """
+    Unittests for testing 'create' command of the HBNB command interpreter.
+    """
 
     @classmethod
     def setUpClass(cls):
@@ -266,8 +271,11 @@ class TestHBNBCommandShow(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(command))
             self.assertEqual(obj.__str__(), output.getvalue().strip())
 
+
 class TestHBNBCommandDestroy(unittest.TestCase):
-    """Unittests for testing 'destroy' command of the HBNB command interpreter."""
+    """
+    Unittests for testing 'destroy' command of the HBNB command interpreter.
+    """
 
     @classmethod
     def setUpClass(cls):
@@ -339,8 +347,11 @@ class TestHBNBCommandDestroy(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(command))
             self.assertNotIn(obj, storage.all())
 
+
 class TestHBNBCommandAll(unittest.TestCase):
-    """Unittests for testing the 'all' command of the HBNB command interpreter."""
+    """
+    Unittests for testing the 'all' command of the HBNB command interpreter.
+    """
 
     @classmethod
     def setUpClass(cls):
@@ -439,7 +450,9 @@ class TestHBNBCommandAll(unittest.TestCase):
 
 
 class TestHBNBCommandCount(unittest.TestCase):
-    """Unittests for testing the 'count' method of the HBNB command interpreter."""
+    """
+    Unittests for testing the 'count' method of the HBNB command interpreter.
+    """
 
     @classmethod
     def setUpClass(cls):
@@ -502,8 +515,11 @@ class TestHBNBCommandCount(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("Review.count()"))
             self.assertEqual("1", output.getvalue().strip())
 
+
 class TestHBNBCommandUpdate(unittest.TestCase):
-    """Unittests for testing the 'update' method of the HBNB command interpreter."""
+    """
+    Unittests for testing the 'update' method of the HBNB command interpreter.
+    """
 
     @classmethod
     def setUpClass(cls):
@@ -604,11 +620,12 @@ class TestHBNBCommandUpdate(unittest.TestCase):
             ("Review", test_id),
         ]
 
-        for class_name, test_id in test_cases:
-            test_cmd = "update {} {} attr_name 'attr_value'".format(class_name, test_id)
+        for class_n, test_id in test_cases:
+            test_cmd = "update {} {} attr_name 'attr_value'".format(class_n,
+                                                                    test_id)
             self.assertFalse(HBNBCommand().onecmd(test_cmd))
-            test_dict = storage.all()["{}.{}".format(class_name, test_id)].__dict__
-            self.assertEqual("attr_value", test_dict["attr_name"])
+            test_di = storage.all()["{}.{}".format(class_n, test_id)].__dict__
+            self.assertEqual("attr_value", test_di["attr_name"])
 
     def test_update_valid_int_attr_space_notation(self):
         with patch("sys.stdout", new=StringIO()) as output:
@@ -630,6 +647,7 @@ class TestHBNBCommandUpdate(unittest.TestCase):
         HBNBCommand().onecmd(test_cmd)
         test_dict = storage.all()["BaseModel.{}".format(test_id)].__dict__
         self.assertEqual("attr_value", test_dict["attr_name"])
+
 
 if __name__ == '__main__':
     unittest.main()
