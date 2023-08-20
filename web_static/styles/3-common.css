@@ -1,0 +1,7 @@
+/* the global style (body style)*/
+body {
+	padding:0;
+	margin:0;
+	color: #484848;
+	font: 14px Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
