@@ -1,23 +1,23 @@
-
-ght:20px;
+.pet{
+  height:20px;
   width:20px;
   background:url('https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/268/icon_pets.png');
-display:inline-block;
-background-size:cover;
+  display:inline-block;
+  background-size:cover;
 }
 .wifi{
   height:20px;
   width:20px;
   background:url('https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/268/icon_tv.png');
-display:inline-block;
-background-size:cover;
+  display:inline-block;
+  background-size:cover;
 }
 .tv{
   height:20px;
   width:20px;
   background:url('https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/268/icon_wifi.png');
-display:inline-block;
-background-size:cover;
+  display:inline-block;
+  background-size:cover;
 }
 .places {
   display: flex;
