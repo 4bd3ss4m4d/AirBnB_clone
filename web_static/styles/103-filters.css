@@ -136,6 +136,12 @@ ol, ul {
     width: 95%;
     margin: 0 auto;
   }
+  .places .amenities .wifi,
+  .places .amenities .pet,
+  .places .amenities .tv {
+    width: 15px;
+    height: 15px;
+  }
 }
 
 /* Swap to vertical layout for small screens */
