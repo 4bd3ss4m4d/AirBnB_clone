@@ -1,0 +1,194 @@
+.guest{
+  height:50px;
+  width:50px;
+  background:url('https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/268/icon_group.png');
+display:inline-block;
+}
+.room{
+  height:50px;
+  width:50px;
+  background:url('https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/268/icon_bed.png');
+display:inline-block;
+}
+.bathroom{
+  height:50px;
+  width:50px;
+  background:url('https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/268/icon_bath.png');
+display:inline-block;
+}
+
+.pet{
+  height:20px;
+  width:20px;
+  background:url('https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/268/icon_pets.png');
+  display:inline-block;
+  background-size:cover;
+}
+.wifi{
+  height:20px;
+  width:20px;
+  background:url('https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/268/icon_tv.png');
+  display:inline-block;
+  background-size:cover;
+}
+.tv{
+  height:20px;
+  width:20px;
+  background:url('https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/268/icon_wifi.png');
+  display:inline-block;
+  background-size:cover;
+}
+.places {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 100%;
+}
+.filters {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  height: 70px;
+  width: 100%;
+}
+
+.filters:before,
+.filters:after {
+  content: "";
+  display: table;
+}
+
+.filters:after {
+  clear: both;
+}
+
+.filters {
+  *zoom: 1;
+}
+ol, ul {
+  list-style: none;
+}
+
+.filters button {
+  background: #ff5a5f;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  float: right;
+  font-size: 18px;
+  height: 48px;
+  margin: 12px 30px;
+  min-width: 150px;
+  width: 20%;
+}
+
+.filters button:hover {
+  background-color: rgba(255, 90, 95, .9);
+}
+
+.filters .locations,
+.filters .amenities {
+  display: inline-block;
+  height: 100%;
+  position: relative;
+  width: 25%;
+}
+
+.filters .locations {
+  border-right: 1px solid #ddd;
+}
+
+.filters .locations:hover,
+.filters .amenities:hover {
+  background-color: #fafafa;
+}
+
+.filters .popover {
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 0 0 4px 4px;
+  display: none;
+  position: absolute;
+  width: 100%;
+}
+
+.filters .locations:hover .popover,
+.filters .amenities:hover .popover {
+  display: block;
+}
+
+/* Locations list padding */
+.filters .locations ul {
+  padding: 6px 0 6px 0;
+}
+
+.filters .locations li {
+  margin: 0 auto 6px 3em;
+}
+
+.filters .amenities li {
+  margin: 12px auto 12px 30px;
+}
+
+/* Filters responsive sizing */
+@media only screen and (max-width: 1000px) {
+  .filters {
+    width: 95%;
+    margin: 0 auto;
+  }
+}
+
+/* Swap to vertical layout for small screens */
+@media only screen and (max-width: 720px) {
+  .filters {
+    display: grid;
+    height: 210px;
+  }
+
+  .filters .locations,
+  .filters .amenities {
+    height: 70px;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .filters .locations:hover .popover,
+  .filters .amenities:hover .popover {
+    margin-left: auto;
+    position: relative;
+    width: 50%;
+    z-index: 1;
+  }
+
+  .filters .amenities:hover {
+    border-top: 1px solid #ddd;
+  }
+}
+
+.filters h2,
+.filters h3,
+.filters h4 {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.filters h2 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 12px auto 0 30px;
+}
+
+.filters h3 {
+  font-size: 1.17em;
+  font-weight: 600;
+  height: 50%;
+  padding: 15.5px 0 0 30px;
+}
+
+.filters h4 {
+  font-size: 14px;
+  font-weight: 400;
+  height: 50%;
+  padding: 4.5px 0 12px 30px;
+}
